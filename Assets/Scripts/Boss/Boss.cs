@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Boss : MonoBehaviour
 {
+    public int bossNum = 1;
     public Bullet heartBullet;
     public Bullet bullet;
     public Line line;
@@ -26,11 +26,13 @@ public class Boss : MonoBehaviour
 
 
     private int spriteLayer = 0;
-    private GameObject[] rotList = new GameObject[8];
-    private GameObject[] muzzleList = new GameObject[8];
+    protected GameObject[] rotList = new GameObject[8];
+    protected GameObject[] muzzleList = new GameObject[8];
+    protected int sessionStatus = 1;
+    private float[] bounceDelay;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         rotList[0] = rot;
         muzzleList[0] = muzzle;
@@ -39,14 +41,15 @@ public class Boss : MonoBehaviour
             rotList[i].transform.SetParent(transform);
             muzzleList[i] = rotList[i].transform.GetChild(0).gameObject;
         }
-        StartCoroutine("pattern1");
+
+        Handler.getInstance.readBoundDelay(bossNum);
         //StartCoroutine("pattern2");
         //StartCoroutine("pattern3");
         //StartCoroutine("pattern4");
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
        /*  //pattern1
         if(time1 > coolTime1){
@@ -69,7 +72,7 @@ public class Boss : MonoBehaviour
         }
     }
 
-    IEnumerator pattern1(){
+    protected IEnumerator pattern1(){
         Vector3 vec = new Vector3(0,0,0);
         while(true){
             for (int i = 0; i < 8; i++){
@@ -84,14 +87,14 @@ public class Boss : MonoBehaviour
             yield return new WaitForSeconds(0.15f);
         }
     }
-    IEnumerator pattern2(){
+    protected IEnumerator pattern2(){
         while(true){
             GameObject tpObj = (GameObject)Instantiate(bullet.gameObject, muzzle.transform.position, transform.GetChild(1).rotation);
             tpObj.GetComponent<Bullet>().speed = bullet2Speed;
             yield return new WaitForSeconds(0.15f);
         }
     }
-    IEnumerator pattern3(){
+    protected IEnumerator pattern3(){
         while(true){
             Vector2 vec = new Vector2(-8.5f,0);
             for(int i = 0;i<number3;i++){
@@ -102,19 +105,28 @@ public class Boss : MonoBehaviour
             yield return new WaitForSeconds(3);
         }
     }
-    IEnumerator pattern4(){
-        float musicTime = 0;
-        yield return new WaitForSeconds(musicTime + 1.1f);
-        float originSpeed = heartBullet.GetComponent<Bullet>().speed;
-        GameObject[] tpObj = new GameObject[8];
-        for (int i = 0; i < 8; i++){
-            tpObj[i] = (GameObject)Instantiate(heartBullet.gameObject, muzzleList[i].transform.position, muzzleList[i].transform.rotation);//Quaternion.Euler(new Vector3(0, 0, i * 45)));
-            tpObj[i].GetComponent<Bullet>().speed = 0;
+    protected IEnumerator bounce(){
+        while(true){
+            foreach(float b in Handler.getInstance.bounceDelay){
+                yield return new WaitForSeconds(b);
+                GetComponent<Animator>().SetTrigger("bounce");
+            }
         }
-        yield return new WaitForSeconds(musicTime + 1.02f);
-        GetComponent<Animator>().SetTrigger("isStart");
-        for (int i = 0; i < 8; i++){
-            tpObj[i].GetComponent<Bullet>().speed = originSpeed;
+        /* for(int i = 0;i<Handler.getInstance.bounceDelay.Length;i++){
+            GetComponent<Animator>().SetTrigger("bounce");
+        } */
+    }
+    protected IEnumerator MoveTo(Vector2 toPos){
+        float count = 0;
+        Vector2 wasPos = transform.position;
+        while(true){
+            count += Time.smoothDeltaTime * 0.5f;
+            transform.position = Vector2.Lerp(wasPos,toPos,count);
+            
+            if(transform.position.Equals(toPos)){
+                break;
+            }
+            yield return null;
         }
     }
 }

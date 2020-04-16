@@ -9,24 +9,24 @@ public class Bullet : MonoBehaviour
     public float rotationSpeed;
     private float tmpSize;
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         tmpSize = 1.2f;
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         //move
 		transform.Translate (Vector2.up * Time.smoothDeltaTime * speed);
 
         //destroy
-        if(transform.position.x < -9.5 || transform.position.x > 9.5 || transform.position.y > 5.5 || transform.position.y < -5.5){
+        if(transform.position.x < -10 || transform.position.x > 10 || transform.position.y > 6 || transform.position.y < -6){
             Destroy(this.gameObject);
         }
 
-        //start
-        tmpSize -= Time.smoothDeltaTime * 7;
+        //start effect
+        tmpSize -= Time.smoothDeltaTime * 2;
         if(tmpSize < 0){
             tmpSize = 0;
         }

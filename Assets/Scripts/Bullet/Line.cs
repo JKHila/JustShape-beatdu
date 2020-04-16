@@ -18,7 +18,7 @@ public class Line : Bullet
     //2: disappear
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
 		sprite = transform.GetChild(0).gameObject;
         tmpCol = sprite.GetComponent<SpriteRenderer>().color;
@@ -29,7 +29,7 @@ public class Line : Bullet
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         if(status == 0 || status == 1){
             if(status == 0){

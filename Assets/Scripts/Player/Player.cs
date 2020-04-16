@@ -88,8 +88,10 @@ public class Player : MonoBehaviour
 		}
 		
 		time += Time.smoothDeltaTime; 
-		if(dashSprite.activeSelf)
+		if(dashSprite.activeSelf){
+			dashSprite.transform.GetChild(0).localScale = new Vector3(time*4,time*4,time*4);
 			dashSprite.transform.GetChild(0).GetChild(0).localScale = new Vector3(time*70,time*70,time*70);
+		}
 	}	
 	IEnumerator showIllusion(){
 		while(true){
