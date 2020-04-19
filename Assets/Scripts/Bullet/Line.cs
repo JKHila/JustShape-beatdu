@@ -9,6 +9,9 @@ public class Line : Bullet
     public float direction;
     //1: right
     //-1: left
+    public Bullet bullet;
+    public float bulletSpeed;
+    
     private Color tmpCol;
     private float tmpWidth = 0;
     private GameObject sprite;
@@ -33,7 +36,7 @@ public class Line : Bullet
     {
         if(status == 0 || status == 1){
             if(status == 0){
-                tmpCol.a += Time.smoothDeltaTime / term;
+                tmpCol.a += Time.smoothDeltaTime / term / 2;
                 sprite.GetComponent<SpriteRenderer>().color = tmpCol;
             }
 
@@ -56,12 +59,20 @@ public class Line : Bullet
     }
 
     IEnumerator Shoot(){
-        sprite.transform.localScale = new Vector2(sprite.transform.localScale.x,maxWidth / 1.2f);
-        tmpWidth = maxWidth / 1.2f;
-        sprite.GetComponent<SpriteRenderer>().color = new Color(255,255,255);
-        yield return new WaitForSeconds(0.2f);
-        sprite.GetComponent<SpriteRenderer>().color = tmpCol;
-        yield return new WaitForSeconds(0.2f);
+        if(bullet && transform.childCount < 2){
+            GameObject tp = Instantiate(bullet.gameObject, transform.position, transform.rotation) as GameObject;
+            tp.transform.SetParent(transform);
+            tp.transform.localPosition = new Vector2(0,-3.5f);
+            tp.GetComponent<Bullet>().speed = bulletSpeed;
+            yield return null;
+        }else if(!bullet){
+            sprite.transform.localScale = new Vector2(sprite.transform.localScale.x,maxWidth / 1.2f);
+            tmpWidth = maxWidth / 1.2f;
+            sprite.GetComponent<SpriteRenderer>().color = new Color(255,255,255);
+            yield return new WaitForSeconds(0.2f);
+            sprite.GetComponent<SpriteRenderer>().color = tmpCol;
+            yield return new WaitForSeconds(0.2f);
+        }
         status = 2;
     }
 }

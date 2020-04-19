@@ -15,7 +15,8 @@ public class Handler : MonoBehaviour
         }
     }
     private AudioSource audioData;
-    public List<float> bounceDelay = new List<float>();
+    public Dictionary<string,List<float>> delay = new Dictionary<string,List<float>>();
+    public int spriteLayer = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,16 +30,17 @@ public class Handler : MonoBehaviour
         
     }
     
-    public void readBoundDelay(int n){
-        StreamReader sr = new StreamReader("Assets\\Delay\\boss1BounceDelay.txt");
-
+    public void readDelay(int n, string name){
+        StreamReader sr = new StreamReader("Assets\\Delay\\Boss" + n + "\\" + name + ".txt");
+        List<float> tp = new List<float>();
         string input = "";
 
         while (true){
             input = sr.ReadLine();
             if (input == null) { break; }
-            bounceDelay.Add(float.Parse(input));
+            tp.Add(float.Parse(input));
         }
+        delay.Add(name,tp);
         sr.Close(); 
     }
     public void changeSceen(){
