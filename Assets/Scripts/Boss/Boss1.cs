@@ -6,16 +6,32 @@ public class Boss1 : Boss
 {
     [Header("session1")]
     private List<List<string>> session1Order = new List<List<string>>{
-        new List<string>{"pattern9","2","0","-4","90"},
-        //new List<string>{"pattern1","false","true","0.5"},
-        new List<string>{"pattern9","2","-5","0","180"},
-        new List<string>{"pattern9","2","5","0","180"},
+        new List<string>{"pattern9","2","0","-3","90"},
+        new List<string>{"pattern9","2","-7","0","180"},
+        new List<string>{"pattern9","2","7","0","180"},
         new List<string>{"pattern9","2","0","0","180"},
-        new List<string>{"ownPattern7","4","90"},
+        new List<string>{"ownPattern7","9.5","4","90"},
         new List<string>{"pattern9","2","0","0","270"},
         new List<string>{"ownPattern2"},
+        new List<string>{"ownPattern7","0","-6","60"},
+        new List<string>{"ownPattern7","0","-6","0"},
+        new List<string>{"ownPattern7","0","-6","-60"},
+        new List<string>{"pattern9","2","-7","0","180"},
+        new List<string>{"pattern9","2","0","-3","90"},
         };
-    
+    [Header("session2")]
+    private List<List<string>> session2Order = new List<List<string>>{
+        new List<string>{"ownPattern6"},
+        new List<string>{"pattern9","2","0","3","90"},
+        new List<string>{"pattern9","2","-7","0","0"},
+        new List<string>{"pattern9","2","7","0","0"},
+        new List<string>{"pattern9","2","0","0","0"},
+        new List<string>{"moveTo","0","0","0.5"},
+        new List<string>{"pattern9","2","0","-3","90"},
+        new List<string>{"pattern1","true","12","0.2","0.5"},
+        new List<string>{"ownPattern2"},
+        new List<string>{"pattern9","2","0","3","90"},
+        };
     [Header("ownPattern6")]
     public Bullet bomb;
     public float bullet6Speed;
@@ -26,9 +42,10 @@ public class Boss1 : Boss
         base.Start();
 
         Handler.getInstance.readDelay(base.bossNum, "Session1");
+        Handler.getInstance.readDelay(base.bossNum, "Session2");
         //session1 start
         base.isRot = false;
-        StartCoroutine(session1());
+        StartCoroutine(session());
 
         StartCoroutine("ownPattern1");
         //StartCoroutine("ownPattern2");
@@ -46,16 +63,24 @@ public class Boss1 : Boss
         for(int i = 0;i<tp.Count;i++){
             //yield return new WaitForSeconds(delay);
             switch(tp[0]){
-                case "ownPattern7" : Debug.Log("pattern7"); StartCoroutine(ownPattern7(float.Parse(tp[++i]),float.Parse(tp[++i])));break;
+                case "ownPattern7" : StartCoroutine(ownPattern7(new Vector2(float.Parse(tp[++i]),float.Parse(tp[++i])),float.Parse(tp[++i])));break;
                 default : StartCoroutine(tp[0]);break;
             }
         }
         yield return null;
     }
-    IEnumerator session1(){
+    IEnumerator session(){
+        //session1
+        yield return new WaitForSeconds(1.5f);
         for(int i = 0;i<session1Order.Count;i++){
             yield return new WaitForSeconds(Handler.getInstance.delay["Session1"][i]);
             StartCoroutine(patternParser(session1Order[i]));
+        }
+        //session2
+        yield return new WaitForSeconds(0.5f);
+        for(int i = 0;i<session2Order.Count;i++){
+            yield return new WaitForSeconds(Handler.getInstance.delay["Session2"][i]);
+            StartCoroutine(patternParser(session2Order[i]));
         }
     }
     IEnumerator ownPattern1(){
@@ -69,7 +94,7 @@ public class Boss1 : Boss
         }
         yield return new WaitForSeconds(musicTime + 1.02f);
         StartCoroutine("bounce");
-        StartCoroutine("ownPattern6");
+        //StartCoroutine("ownPattern6");
         StartCoroutine(MoveTo(new Vector2(6,0),2));
         for (int i = 0; i < 8; i++){
             tpObj[i].GetComponent<Bullet>().speed = originSpeed;
@@ -105,12 +130,16 @@ public class Boss1 : Boss
             }
         }
     }
-    IEnumerator ownPattern7(float position, float angle){
-        GameObject tp = Instantiate(bullet[3].gameObject, new Vector2(9.5f,position), bullet[3].transform.rotation) as GameObject;
-        yield return new WaitUntil(() => tp.transform.position.x <= 9.0f);
+    IEnumerator ownPattern7(Vector2 position, float angle){
+        GameObject tp = Instantiate(bullet[3].gameObject, new Vector2(position.x,position.y), Quaternion.Euler(new Vector3(0,0,angle))) as GameObject;
+        //tp.transform.rotation = Quaternion.Euler(new Vector3(0,0,angle));
+        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitUntil(() => tp.transform.position.x <= 9.0f);
         for(int i = 0;i<10;i++){
-            tp = Instantiate(bullet[4].gameObject, new Vector2(9.5f,position), bullet[3].transform.rotation) as GameObject;
-            yield return new WaitUntil(() => tp.transform.position.x <= 9.0f);
+            tp = Instantiate(bullet[4].gameObject, new Vector2(position.x,position.y), Quaternion.Euler(new Vector3(0,0,angle))) as GameObject;
+            //tp.transform.rotation = Quaternion.Euler(new Vector3(0,0,angle));
+            yield return new WaitForSeconds(0.1f);
+            //yield return new WaitUntil(() => tp.transform.position.x <= 9.0f);
         }
     }
     

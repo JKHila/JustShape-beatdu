@@ -76,12 +76,15 @@ public class Player : MonoBehaviour
 			//dashSprite.transform.GetChild(1).localScale = new Vector2(0,0);
 			dashSprite.transform.position = transform.position;
 			dashSprite.SetActive(true);
-			speed = dashSpeed;
+			//transform.Translate(transform.up * 100 * Time.smoothDeltaTime);
+			//speed = dashSpeed;
+			transform.GetComponent<Rigidbody2D>().AddForce(transform.GetChild(0).up * 800);
 			isCoolTime = true;
         }
 		if(time > 0.1f) {
+			transform.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 			speed = 5;
-		}
+		} 
 		if(isCoolTime && time > 0.5f){
 			isCoolTime = false;
 			dashSprite.SetActive(false);

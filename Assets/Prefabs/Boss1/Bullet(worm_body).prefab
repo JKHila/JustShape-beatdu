@@ -27,11 +27,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049423872033139192}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 7.87, y: -3.74, z: 0.504755}
+  m_LocalPosition: {x: 0, y: 0, z: 0.504755}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children:
   - {fileID: 2049423872237457768}
-  - {fileID: 3359218663576104952}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
@@ -70,6 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   isRot: 0
+  isSpriteRot: 0
   rotationSpeed: 0
 --- !u!114 &6678343103180472542
 MonoBehaviour:
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wormPattern: 1
   wormSpeed: 3
-  wormRange: 0.5
+  wormRange: 2
   clumpPattern: 1
   clumpRange: 0.03
   clumpSpeed: 0.05
@@ -113,14 +113,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049423872237457775}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5446392590086586649}
+  - {fileID: 3359218663576104952}
   m_Father: {fileID: 2049423872033139194}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!212 &2049423872237457769
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -276,11 +277,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9053457229126033333}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.9, z: 1}
+  m_LocalScale: {x: 0.8999999, y: 0.8999999, z: 1}
   m_Children: []
-  m_Father: {fileID: 2049423872033139194}
+  m_Father: {fileID: 2049423872237457768}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4796540776523694588

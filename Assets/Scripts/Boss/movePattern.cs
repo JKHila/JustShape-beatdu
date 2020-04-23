@@ -21,7 +21,7 @@ public class movePattern : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        firstPosition = transform.position;
+        firstPosition = transform.GetChild(0).localPosition;
         firstScale = transform.localScale;
         tmpScale = firstScale.x;
     }
@@ -30,10 +30,10 @@ public class movePattern : MonoBehaviour
     void Update()
     {
         if(wormPattern){
-            if((wormSpeed > 0 && transform.position.y > firstPosition.y + wormRange) || (wormSpeed < 0 && transform.position.y < firstPosition.y - wormRange))
+            if((wormSpeed > 0 && transform.GetChild(0).localPosition.x > firstPosition.x + wormRange) || (wormSpeed < 0 && transform.GetChild(0).localPosition.x <= firstPosition.x - wormRange))
                 wormSpeed *= -1;
 
-		    transform.Translate (Vector2.right * Time.smoothDeltaTime * wormSpeed);
+		    transform.GetChild(0).Translate (Vector2.up * Time.smoothDeltaTime * wormSpeed);
         }
 
         if(clumpPattern){

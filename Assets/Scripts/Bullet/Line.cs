@@ -55,6 +55,7 @@ public class Line : Bullet
             //transform.Translate (Vector2.right * Time.smoothDeltaTime * 10000 * direction);
             tmpCol.a -= Time.smoothDeltaTime / term * 5;
             sprite.GetComponent<SpriteRenderer>().color = tmpCol;
+
         }
     }
 

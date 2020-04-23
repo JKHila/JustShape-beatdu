@@ -71,13 +71,13 @@ public class Boss : MonoBehaviour
         }
     }
     protected virtual IEnumerator patternParser(List<string> tp){
-        Debug.Log("parent"+tp[0]);
         if(tp[0].Contains("own")) yield break;
         for(int i = 0;i<tp.Count;i++){
             //yield return new WaitForSeconds(delay);
             switch(tp[0]){
-                case "pattern1" : StartCoroutine(pattern1(bool.Parse(tp[++i]),bool.Parse(tp[++i]),float.Parse(tp[++i])));break;
+                case "pattern1" : StartCoroutine(pattern1(bool.Parse(tp[++i]),float.Parse(tp[++i]),float.Parse(tp[++i]),float.Parse(tp[++i])));break;
                 case "pattern9" : StartCoroutine(pattern9(bullet[int.Parse(tp[++i])].gameObject,new Vector2(float.Parse(tp[++i]),float.Parse(tp[++i])),float.Parse(tp[++i])));break;
+                case "moveTo" : StartCoroutine(MoveTo(new Vector2(float.Parse(tp[++i]),float.Parse(tp[++i])),float.Parse(tp[++i])));break;
                 //default : StartCoroutine(tp[0]);break;
             }
         }
@@ -99,10 +99,9 @@ public class Boss : MonoBehaviour
         }
         yield return null;
     } */
-    protected IEnumerator pattern1(bool isRot, bool isOnce, float size){
-        Vector3 vec = new Vector3(0,0,0);
+    protected IEnumerator pattern1(bool isRot, float count, float size, float term){
         this.isRot = isRot;
-        do{
+        for(int j = 0;j<count;j++){
             for (int i = 0; i < 8; i++){
                 GameObject tp = Instantiate(bullet[0].gameObject, muzzleList[i].transform.position, muzzleList[i].transform.rotation) as GameObject;//Quaternion.Euler(new Vector3(0, 0, i * 45)));
                 tp.GetComponent<Bullet>().setSize(size);
@@ -111,9 +110,8 @@ public class Boss : MonoBehaviour
                 //tpObj.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = spriteLayer;
                 //tpObj.transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = spriteLayer+1;
             }
-            vec.z += 1;
-            yield return new WaitForSeconds(0.15f);}
-        while(!isOnce);
+            yield return new WaitForSeconds(term);
+        }   
         yield return null;
     }
     protected IEnumerator pattern2(){
@@ -154,7 +152,7 @@ public class Boss : MonoBehaviour
         float count = 0;
         Vector2 wasPos = transform.position;
         while(true){
-            count += Time.smoothDeltaTime * speed;
+            count += Time.smoothDeltaTime / speed;
             transform.position = Vector2.Lerp(wasPos,toPos,count);
             
             if(transform.position.Equals(toPos)){

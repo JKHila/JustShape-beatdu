@@ -147,8 +147,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   isRot: 0
+  isSpriteRot: 0
   rotationSpeed: 0
-  maxWidth: 1.2
+  maxWidth: 2
   term: 1.2
   direction: 1
   bullet: {fileID: 8460586814491620950, guid: 9443f661683c4724080945e763f0eac1, type: 3}
